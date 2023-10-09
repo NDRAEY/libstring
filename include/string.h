@@ -17,3 +17,4 @@ void string_append_charptr(string_t* string, const char* concatenable);
 void string_append(string_t* string, const string_t* concatenable);
 void string_crop(string_t* string, size_t start, size_t end);
 void string_destroy(string_t *string);
+void string_append_char(string_t* string, char ch);

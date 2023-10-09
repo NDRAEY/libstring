@@ -70,6 +70,23 @@ void string_crop(string_t* string, size_t start, size_t end) {
 	string->length = new_length;
 }
 
+void string_append_char(string_t* string, char ch) {
+	if(!string)
+		return;
+
+	char* data = realloc(string->data, string->length + 2);
+
+	if(!data)
+		return;
+
+	data[string->length] = ch;
+	data[string->length + 1] = 0;
+
+	string->length++;
+
+	string->data = data;
+}
+
 void string_destroy(string_t *string) {
 	if(string->data)
 		free(string->data);
