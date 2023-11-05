@@ -160,6 +160,20 @@ void string_split_free(vector_t* vec) {
 	vector_destroy(vec);
 }
 
+string_t* string_clone(string_t* str) {
+	if(!str)
+		return 0;
+
+	string_t* str2 = string_new();
+
+	if(!str2)
+		return 0;
+
+	string_append(str2, str);
+
+	return str2;
+}
+
 void string_destroy(string_t *string) {
 	if(string->data)
 		free(string->data);

@@ -23,4 +23,5 @@ void string_append_char(string_t* string, char ch);
 string_t* string_from_charptr(const char* chars);
 vector_t* string_split(string_t* string, const char* delimiter);
 void string_split_free(vector_t* vec);
+string_t* string_clone(string_t* str);
 void string_destroy(string_t *string);
