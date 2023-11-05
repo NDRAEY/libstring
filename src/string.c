@@ -6,9 +6,13 @@
 #include <string.h>
 #include <stdio.h>
 #include "../include/string.h"
+#include "vector.h"
 
 string_t* string_new() {
 	string_t* string = calloc(sizeof *string, 1);
+
+	if(!string)
+		return 0;
 
 	string->data = calloc(1, 1);
 	string->length = 0;
@@ -85,6 +89,75 @@ void string_append_char(string_t* string, char ch) {
 	string->length++;
 
 	string->data = data;
+}
+
+string_t* string_from_charptr(const char* chars) {
+	string_t* str = string_new();
+
+	if(!str)
+		return 0;
+
+	string_append_charptr(str, chars);
+
+	return str;
+}
+
+vector_t* string_split(string_t* string, const char* delimiter) {
+	if(!string || !delimiter)
+		return 0;
+
+	vector_t* vec = vector_new();
+
+	if(!vec)
+		return 0;
+
+	char* curptr = string->data;
+	size_t delim_len = strlen(delimiter);
+
+	char* el = strstr(curptr, delimiter);
+
+	if(!el) { // If no occurrences, just add whole string and return vector.
+		string_t* str = string_new();
+
+		string_append_charptr(str, curptr);
+
+		vector_push_back(vec, (size_t)str);
+
+		return vec;
+	}
+
+	while(el) {
+		el = strstr(curptr, delimiter);
+		size_t len = el - curptr;
+
+		if(el == 0)
+			len = strlen(curptr);
+
+		char* temp = malloc(len + 1);
+		strncpy(temp, curptr, len);
+		temp[len] = 0;
+
+		string_t* substring = string_from_charptr(temp);
+
+		vector_push_back(vec, (size_t)substring);
+
+		free(temp);
+
+		curptr = el + delim_len;
+	}
+
+	return vec;
+}
+
+void string_split_free(vector_t* vec) {
+	if(!vec)
+		return;
+
+	for(size_t i = 0; i < vec->size; i++) {
+		string_destroy((string_t*)vec->data[i]);
+	}
+
+	vector_destroy(vec);
 }
 
 void string_destroy(string_t *string) {

@@ -2,25 +2,15 @@
 #include "include/string.h"
 
 int main(void) {
-	string_t* str = string_new();
-	string_t* str2 = string_new();
+	string_t* str = string_from_charptr("Terve! Olen Zeraora, Sähköistetty kissa!");
 
-	string_append_charptr(str, "Hello");
-	string_append_charptr(str2, ", world! ");
-	string_append(str, str2);
+	vector_t* splat = string_split(str, " ");
 
-	string_crop(str, 3, 5);
+	for(size_t i = 0; i < splat->size; i++) {
+		printf("> [%s]\n", ADDR2STRING(splat->data[i])->data);
+	}
 
-	string_append_char(str, 'a');
-	string_append_char(str, 'b');
-	string_append_char(str, 'c');
-	string_append_char(str, 'd');
-	string_append_char(str, '1');
-	string_append_char(str, '2');
-	string_append_char(str, '3');
-
-	printf("%s\n", str->data);
+	string_split_free(splat);
 
 	string_destroy(str);
-	string_destroy(str2);
 }

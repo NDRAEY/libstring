@@ -1,9 +1,9 @@
-SOURCE = src/string.c
+SOURCE = src/string.c libvector/src/vector.c
 OBJS = $(SOURCE:%.c=%.o)
 LIB = libstring.a
 EXAMPLE = test_string
 
-CFLAGS ?= -Wall -Wextra -ggdb3 -O0
+CFLAGS ?= -Wall -Wextra -ggdb3 -O0 -Ilibvector/include
 
 all: $(LIB) $(EXAMPLE)
 
