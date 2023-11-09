@@ -2,23 +2,17 @@
 #include "include/string.h"
 
 int main(void) {
-	string_t* str = string_from_charptr("Terve! Olen Zeraora, Sähköistetty kissa!");
+	string_t* str = string_from_charptr("Hello 12345! 6789 I lOvE TeXt    TEST ");
+	vector_t* vec = string_split(str, " ");
 
-	string_t* str2 = string_clone(str);
+	printf("STR LEN: %ld\n", str->length);
+	printf("VEC LEN: %ld\n", vec->size);
 
-//	vector_t* splat = string_split(str, " ");
-//
-//	for(size_t i = 0; i < splat->size; i++) {
-//		printf("> [%s]\n", ADDR2STRING(splat->data[i])->data);
-//	}
-//
-//	string_split_free(splat);
+	for(size_t i = 0; i < vec->size; i++) {
+		printf("[%s]\n", ((string_t*)(vec->data[i]))->data);
+	}
 
-	string_append_charptr(str2, " But this string is cloned...");
-
-	printf("%s\n", str->data);
-	printf("%s\n", str2->data);
-
+	string_split_free(vec);
 	string_destroy(str);
-	string_destroy(str2);
+
 }

@@ -92,14 +92,33 @@ void string_append_char(string_t* string, char ch) {
 }
 
 string_t* string_from_charptr(const char* chars) {
-	string_t* str = string_new();
+	string_t* string = calloc(sizeof *string, 1);
 
-	if(!str)
+	if(!string)
 		return 0;
 
-	string_append_charptr(str, chars);
+	string->length = strlen(chars);
+	string->data = malloc(string->length + 1);
 
-	return str;
+	memcpy(string->data, chars, string->length);
+	string->data[string->length] = 0;
+
+	return string;
+}
+
+string_t* string_from_sized_charptr(const char* chars, size_t length) {
+	string_t* string = calloc(sizeof *string, 1);
+
+	if(!string)
+		return 0;
+
+	string->data = malloc(length + 1);
+	string->length = length;
+
+	memcpy(string->data, chars, length);
+	string->data[string->length] = 0;
+
+	return string;
 }
 
 vector_t* string_split(string_t* string, const char* delimiter) {
@@ -133,15 +152,9 @@ vector_t* string_split(string_t* string, const char* delimiter) {
 		if(el == 0)
 			len = strlen(curptr);
 
-		char* temp = malloc(len + 1);
-		strncpy(temp, curptr, len);
-		temp[len] = 0;
-
-		string_t* substring = string_from_charptr(temp);
+		string_t* substring = string_from_sized_charptr(curptr, len);
 
 		vector_push_back(vec, (size_t)substring);
-
-		free(temp);
 
 		curptr = el + delim_len;
 	}
