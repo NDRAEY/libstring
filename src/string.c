@@ -187,6 +187,52 @@ string_t* string_clone(string_t* str) {
 	return str2;
 }
 
+void string_reverse(string_t *str) {
+    if(!str)
+        return;
+
+    size_t len = str->length;
+
+    for(size_t i = 0; i < len / 2; i++) {
+        char tmp = str->data[i];
+        str->data[i] = str->data[len - i - 1];
+        str->data[len - i - 1] = tmp;
+    }
+}
+
+string_t* string_from_integer(int number) {
+    string_t* str = string_new();
+    bool is_negative = false;
+
+    if(!str)
+        return 0;
+
+    if(number == 0) {
+        string_append_char(str, '0');
+
+        return str;
+    }
+
+    if(number < 0) {
+        number = -number;
+
+        is_negative = true;
+    }
+
+    while(number > 0) {
+        string_append_char(str, (char)((number % 10) + '0'));
+        number /= 10;
+    }
+
+    if(is_negative) {
+        string_append_char(str, '-');
+    }
+
+    string_reverse(str);
+
+    return str;
+}
+
 void string_destroy(string_t *string) {
 	if(string->data)
 		free(string->data);
